@@ -53,32 +53,27 @@ def dconcat(source: str = None, change:str = None, merge: str = None, reverse: b
             datasets.write(source, source_line, True)
       return 0
 
-def ddiff_source_write(source: str = None, change:str = None, merge: str = None) -> int:
+def compare_running_log_to_previous_log(running_log: str = None, previous_log:str = None, differences_dataset: str = None) -> int:
    """
-   This utility will find the differences between two datasets will concatenate the
-   changes to the source dataset (default).
-   The default behavior can be reversed to append the changes found to the changes
-   dataset.
-   If a merge dataset is provided, all changes will be inserted into the merge
-   data leaving out any duplicates.
+   This utility will compare the running log to the previously captured log.
+   Differences will be written to the output dataset.
 
    Parameters
    ----------
-   source (str): Source dataset containing the original listing.  
-   change (str): Changes dataset containing the updated listing to be compared
-   to source dataset.  
+   running_log (str): Source dataset containing the original listing.
+   previous_log (str): Changes dataset containing the updated listing to be compared
+   to source dataset.
+   output (str): Dataset to write the differences too.
    """
-
-   # Always compare DS1 and DS2 and process further accordingly.
-   if source is not None and change is not None:
-      result=datasets.compare(source, change)
+   if running_log is not None and previous_log is not None:
+      result=datasets.compare(running_log, previous_log)
       lines = result.split('\n')
 
       source_lines = []
       for line in lines:
-         if line.startswith("I -"):
-            datasets.write(merge, line[4:84], True)
-      return 0
+         if line.startswith("D -"):
+            datasets.write(differences_dataset, line[4:84], True)
+   return (0 if lines else 4)
    
 # Print the source dataset differences
 def ddiff_source(source: str = None, change:str = None) -> str:

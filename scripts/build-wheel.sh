@@ -31,6 +31,7 @@ export WHEEL_DIR="wheel"
 # Copy local file content to UNIX System Services files
 # ---------------------------------------------------------------------
 echo "Copying python source file dconcat.py to USS"
+ssh -q ${USER}@${HOST} "rm -rf /tmp/${WHEEL_DIR}"
 scp -O -r ../${WHEEL_DIR} ${USER}@${HOST}:/tmp/${WHEEL_DIR}
 
 # ---------------------------------------------------------------------
@@ -38,7 +39,7 @@ scp -O -r ../${WHEEL_DIR} ${USER}@${HOST}:/tmp/${WHEEL_DIR}
 # ---------------------------------------------------------------------
 
 echo "${SEP_LINE_NL}Building and installing 'dconcat' wheel on managed z/OS.${SEP_LINE_NL}"
-SSH_OUTPUT=$(ssh -q ${USER}@${HOST} "rm -rf ${WHEEL_DIR};
+SSH_OUTPUT=$(ssh -q ${USER}@${HOST} "rm -rf /tmp/lib; \
 . ./.profile; \
 mkdir -p /tmp/lib; \
 python3 -m pip install --no-input --upgrade build --target /tmp/lib; \

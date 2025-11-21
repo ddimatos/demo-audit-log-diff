@@ -22,4 +22,4 @@
 
     - name: Print result
       ansible.builtin.debug:
-        msg: "{{ result.stdout_lines }}"
+        msg: "{{ result.stdout_lines}}"
