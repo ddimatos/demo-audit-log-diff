@@ -1,0 +1,42 @@
+---
+- name: Setup datasets
+  hosts: all
+  gather_facts: false
+  environment: "{{ environment_vars }}"
+  vars:
+    src: "audit.current.seq"
+    change: "audit.previous.seq"
+    merge: "audit.all.seq"
+    tmp_file: "/tmp/tmp.txt"
+
+  tasks:
+    - name: Create a sequential data set if it does not exist
+      ibm.ibm_zos_core.zos_data_set:
+        name: "{{ src }}"
+        state: absent
+      register: result
+
+    - name: Print result
+      ansible.builtin.debug:
+        msg: "{{ result }}"
+
+    - name: Create a sequential data set if it does not exist
+      ibm.ibm_zos_core.zos_data_set:
+        name: "{{ change }}"
+        state: absent
+      register: result
+
+    - name: Print result
+      ansible.builtin.debug:
+        msg: "{{ result }}"
+
+    - name: Create a sequential data set if it does not exist
+      ibm.ibm_zos_core.zos_data_set:
+        name: "{{ merge }}"
+        state: absent
+      register: result
+
+    - name: Print result
+      ansible.builtin.debug:
+        msg: "{{ result }}"
+
