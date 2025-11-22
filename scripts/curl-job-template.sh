@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Basic script on how to execute a job template on AAP, query until status of job is 'running'
+# then download the job log. There is little error handling built into this, current expectations
+# are than this executes on a happy path.
+
 ENV_SOURCE_FILE="../.env"
 export SEP_LINE_NL="\n-------------------------------------------------------------------------------\n"
 
