@@ -3,7 +3,6 @@
 ENV_SOURCE_FILE="../.env"
 export SEP_LINE_NL="\n-------------------------------------------------------------------------------\n"
 
-
 # ---------------------------------------------------------------------
 # Sourcing the setup file to setup and teardown the demo script
 # ---------------------------------------------------------------------
@@ -42,8 +41,11 @@ while [ "${stat}" = "running" ]; do
   sleep 1
   result=$(curl -s -k -X GET -H "Authorization: Bearer ${AAP_AUTH_TOKEN}" -H "Content-Type: application/json" "https://${HOST_IP}/api/controller/v2/jobs/${job_id}/" |jq )
   stat=$( jq -r  '.status' <<< "${result}" )
-  echo "AAP template job is still ${stat}"
+  echo "[INFO] Ansible job template has not completed, status=[${stat}]"
 done
+
+echo "${SEP_LINE_NL}[INFO] Ansible job template has completed with status=[${stat}], displaying result${SEP_LINE_NL}"
 echo "${result}"
-echo
-echo ${stat}
+
+echo "${SEP_LINE_NL}[INFO] Downloading Ansible job template log for further review${SEP_LINE_NL}"
+curl -O -k -J -L -H "Authorization: Bearer ${AAP_AUTH_TOKEN}" -H "Content-Type: application/json" "https://${HOST_IP}/api/controller/v2/jobs/${job_id}/stdout?format=txt_download"

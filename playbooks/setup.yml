@@ -1,5 +1,5 @@
 ---
-- name: Test zos_dconcat playbook
+- name: Setup datasets
   hosts: all
   gather_facts: false
   environment: "{{ environment_vars }}"
