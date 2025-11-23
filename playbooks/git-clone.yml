@@ -14,3 +14,9 @@
       ansible.builtin.git:
         repo: 'https://github.com/ddimatos/demo-audit-log-diff.git'
         dest: /tmp/demo-audit-log-diff
+      register: result
+
+    - name: Print result
+      ansible.builtin.debug:
+        msg: "{{ result }}"
+      register: result
