@@ -1,0 +1,16 @@
+---
+- name: Setup wheel
+  hosts: all
+  gather_facts: false
+  environment: "{{ environment_vars }}"
+  vars:
+    src: "audit.current.seq"
+    change: "audit.previous.seq"
+    merge: "audit.all.seq"
+    tmp_file: "/tmp/tmp.txt"
+
+  tasks:
+    - name: Clone GitHub repository to access curl script.
+      ansible.builtin.git:
+        repo: 'https://github.com/ddimatos/demo-audit-log-diff.git'
+        dest: /tmp/demo-audit-log-diff
