@@ -1,0 +1,45 @@
+---
+- name: Setup wheel
+  hosts: all
+  gather_facts: false
+  environment: "{{ environment_vars }}"
+  vars:
+    src: "audit.current.seq"
+    change: "audit.previous.seq"
+    merge: "audit.all.seq"
+    tmp_file: "/tmp/tmp.txt"
+
+  tasks:
+    - name: "Clean up remote system, remove any wheel directory"
+      ansible.builtin.shell: |
+        rm -rf /tmp/wheel
+        rm -rf /tmp/lib
+        mkdir -p /tmp/lib
+      register: result
+
+    - name: Copy a local directory to a PDSE
+      zos_copy:
+        src: ../wheel
+        dest: /tmp
+
+    - name: Install Python packages to a specific target directory
+      ansible.builtin.pip:
+        name:
+          - build
+        state: present
+        extra_args: --target /tmp/lib
+        executable: /allpython/3.12/usr/lpp/IBM/cyp/v3r12/pyz/bin/pip3
+
+    - name: "Clean up remote system, remove any wheel directory"
+      ansible.builtin.shell: |
+        cd /tmp/wheel
+        python3 -m build
+        cd /tmp
+      register: result
+
+    - name: Install Python packages to a specific target directory
+      ansible.builtin.pip:
+        name: /tmp/wheel/dist/dconcat_module-0.0.1-py3-none-any.whl
+        state: present
+        extra_args: --target /tmp/lib
+        executable: /allpython/3.12/usr/lpp/IBM/cyp/v3r12/pyz/bin/pip3
