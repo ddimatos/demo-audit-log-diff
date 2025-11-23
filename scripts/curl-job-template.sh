@@ -3,8 +3,8 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # Demo script on how to:
 # 1) Execute an AAP job template remotely
-# 2) Query job execution status until status = successful, status can be 'running', 'pending', etc
-# 3) On job completion with status 'successful', download the job log.
+# 2) Query job status until an entry for 'finished' is made, e.g., "finished": "2025-11-23T08:33:18.159297Z",
+# 3) On confirmation the job has 'finished', download the job log.
 # 4) There is no error handling in this demo, value checks and more should be performed.
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -13,6 +13,11 @@
 #  export MY_AAP_AUTH_TOKEN="02cB9jXTCeNxFOf5t7bOEJwFGaRiiI"
 #  export MY_HOST_IP=9.60.239.209
 # Optionally, you can export these in the shell, they are not included because they are unique to AAP
+# ---------------------------------------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------------------------------------------------
+# You must make OEF binaries available to the shell by updating the $PATH , e.g.,
+# export PATH=$PATH:/usr/lpp/oef/V1R1M0/bin/
 # ---------------------------------------------------------------------------------------------------------------------
 
 ENV_SOURCE_FILE="../.env"
@@ -56,14 +61,14 @@ sleep 2
 echo "${SEP_LINE_NL}[INFO] Get job template status using AAP REST API for job id ${job_id} ${SEP_LINE_NL}"
 result=$(curl -s -k -X GET -H "Authorization: Bearer ${AAP_AUTH_TOKEN}" -H "Content-Type: application/json" "https://${HOST_IP}/api/controller/v2/jobs/${job_id}/" |jq )
 
-# Extract the status of the JOB log, status can be ['successful', 'running', 'pending'] (and possibly more)
-stat=$( echo "${response}"|  jq -r '.status')
+# Extract 'finished' status, it will be 'null' until it completes, on completion a time stamp is entered , e.g., "finished": "2025-11-23T08:33:18.159297Z"
+stat=$( echo "${result}"|  jq -r '.finished')
 
 # Loop while status is not equal to success (you probably should put a max count on the number of iterations to loop to avoid an infinite loop)
-while [ "${stat}" != "successful" ]; do
+while [ "${stat}" = "null" ]; do
   sleep 2
   result=$(curl -s -k -X GET -H "Authorization: Bearer ${AAP_AUTH_TOKEN}" -H "Content-Type: application/json" "https://${HOST_IP}/api/controller/v2/jobs/${job_id}/" |jq )
-  stat=$( echo "${response}"|  jq -r '.status')
+  stat=$( echo "${result}"|  jq -r '.finished')
   echo "[INFO] Ansible job template has not completed, status=[${stat}]"
 done
 
