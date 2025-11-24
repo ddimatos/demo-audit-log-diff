@@ -16,6 +16,11 @@ export _TAG_REDIR_ERR=txt
 export _TAG_REDIR_OUT=txt
 export LANG=C
 
+# Set up OEF
+export OEF_HOME=/usr/lpp/oef/V1R1M0
+export PATH=$PATH:${OEF_HOME}/bin
+
+
 # Personal Choice Terminal Options
 TERM=dtterm
 PS1="[ $LOGNAME:$PWD: ]"
