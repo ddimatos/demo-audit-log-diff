@@ -30,7 +30,7 @@ environment_vars:
 #   _BPXK_AUTOCVT: "ON"
 #   PYTHONPATH: "{{ ZOAU_HOME }}/lib/{{ PYTHON_VERSION}}:/tmp/lib/"
 #   LIBPATH: "{{ ZOAU_HOME }}/lib:{{ PYTHON_HOME }}/lib:/lib:/usr/lib:."
-#   PATH: "{{ ZOAU_HOME }}/bin:{{ PYTHON_HOME }}/bin:{{OEF_HOME:}}/bin:/bin:/var/bin"
+#   PATH: "{{ ZOAU_HOME }}/bin:{{ PYTHON_HOME }}/bin:{{OEF_HOME}}/bin:/bin:/var/bin"
 #   _CEE_RUNOPTS: "FILETAG(AUTOCVT,AUTOTAG) POSIX(ON)"
 #   _TAG_REDIR_ERR: "txt"
 #   _TAG_REDIR_IN: "txt"
