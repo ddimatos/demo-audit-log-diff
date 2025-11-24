@@ -10,6 +10,18 @@
     tmp_file: "/tmp/tmp.txt"
 
   tasks:
+    - name: "Setup a .profile on the managed node so I will not have to export OEF during a demo"
+      ibm.ibm_zos_core.zos_copy:
+        src: "{{ playbook_dir }}/../files/profile"
+        dest: "/.profile"
+        force: True
+      register: result
+
+    - name: Print result
+      ansible.builtin.debug:
+        msg: "{{ result }}"
+      register: result
+
     - name: Clone GitHub repository to access curl script.
       ansible.builtin.git:
         repo: 'https://github.com/ddimatos/demo-audit-log-diff.git'
@@ -20,3 +32,32 @@
       ansible.builtin.debug:
         msg: "{{ result }}"
       register: result
+
+    - name: "Setup a .env on the managed node so I will not have to export OEF during a demo"
+      ibm.ibm_zos_core.zos_copy:
+        src: "/.env"
+        dest: "/tmp/demo-audit-log-diff/.env"
+        force: True
+        remote_src: True
+      ignore_errors: True
+      register: result
+
+    - name: Print result
+      ansible.builtin.debug:
+        msg: "{{ result }}"
+      register: result
+      ignore_errors: True
+
+    # This would be if you have the env file locally to your playbook.
+    # - name: "Setup a .env on the managed node so I will not have to export OEF during a demo"
+    #   ibm.ibm_zos_core.zos_copy:
+    #     src: "{{ playbook_dir }}/../.env"
+    #     dest: "/tmp/demo-audit-log-diff/.env"
+    #     force: True
+    #   register: result
+
+    # - name: Print result
+    #   ansible.builtin.debug:
+    #     msg: "{{ result }}"
+    #   register: result
+
