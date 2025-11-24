@@ -24,7 +24,7 @@
 
     - name: Copy a local directory to a PDSE
       zos_copy:
-        src: ../wheel
+        src: "{{ playbook_dir }}/../wheel"
         dest: /tmp
       register: result
 
