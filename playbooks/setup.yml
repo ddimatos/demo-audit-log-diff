@@ -11,7 +11,7 @@
 
   tasks:
     - name: "Removing column headers from data 1"
-      ansible.builtin.shell: "/usr/bin/tail -n +3 ../files/{{ src }} > {{ tmp_file }}"
+      ansible.builtin.shell: "/usr/bin/tail -n +3 {{ playbook_dir }}/../files/{{ src }} > {{ tmp_file }}"
       delegate_to: localhost
 
     - name: "Copy data to zos data set"
@@ -37,7 +37,7 @@
       register: result
 
     - name: "Removing column headers from data"
-      ansible.builtin.shell: "/usr/bin/tail -n +3 ../files/{{ change }} > {{ tmp_file }}"
+      ansible.builtin.shell: "/usr/bin/tail -n +3 {{ playbook_dir }}/../files/{{ change }} > {{ tmp_file }}"
       register: result
       delegate_to: localhost
 
