@@ -10,8 +10,8 @@
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Create a .env file in the root of the project (../.env) and place in it values:
-#  export MY_AAP_AUTH_TOKEN="02cB9jXTCeNxFOf5t7bOEJwFGaRiiI"
-#  export MY_HOST_IP=9.60.239.209
+#  export MY_AAP_AUTH_TOKEN="abcdefghijklmnopqrstuvwxyz"
+#  export MY_HOST_IP=1.23.456.789
 # Optionally, you can export these in the shell, they are not included because they are unique to AAP
 # ---------------------------------------------------------------------------------------------------------------------
 
